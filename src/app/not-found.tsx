@@ -19,12 +19,12 @@ export default function NotFound() {
       </svg>
       <StarField className="sm:-mt-16" />
 
-      <p className="font-display text-4xl/tight font-light text-white">404</p>
+      {/* <p className="font-display text-4xl/tight font-light text-white">404</p> */}
       <h1 className="mt-4 font-display text-xl/8 font-semibold text-white">
-        Page not found
+        Coming Soon!
       </h1>
       <p className="mt-2 text-sm/6 text-gray-300">
-        Sorry, we couldn’t find the page you’re looking for.
+        Sorry, the page you are looking for is under construction!
       </p>
       <IconLink href="/" className="mt-4">
         Go back home

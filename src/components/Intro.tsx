@@ -20,6 +20,40 @@ function GitHubIcon(props: React.ComponentPropsWithoutRef<'svg'>) {
   )
 }
 
+function EmailIcon(props: React.ComponentPropsWithoutRef<'svg'>) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      {...props}
+    >
+      <path d="M1.5 8.67v8.58a3 3 0 0 0 3 3h15a3 3 0 0 0 3-3V8.67l-8.928 5.493a3 3 0 0 1-3.144 0L1.5 8.67Z" />
+      <path d="M22.5 6.908V6.75a3 3 0 0 0-3-3h-15a3 3 0 0 0-3 3v.158l9.714 5.978a1.5 1.5 0 0 0 1.572 0L22.5 6.908Z" />
+    </svg>
+  )
+}
+
+function DribbbleIcon(props: React.ComponentPropsWithoutRef<'svg'>) {
+  return (
+    <svg
+      width="41"
+      height="41"
+      viewBox="0 0 41 41"
+      xmlns="http://www.w3.org/2000/svg"
+      fill="currentColor"
+      {...props}
+    >
+      <path
+        // PERBAIKAN: Menggunakan camelCase untuk properti SVG
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M20.4949 0.494904C9.44656 0.494904 0.494873 9.45309 0.494873 20.4913C0.494873 30.9839 8.58981 39.5963 18.8726 40.4227V40.4949H20.4949C31.5432 40.4949 40.4949 31.5367 40.4949 20.4985C40.4949 9.46115 31.544 0.494904 20.4949 0.494904ZM24.9142 36.6619C23.6595 37.0041 22.3461 37.2042 20.9923 37.2437H20.4949C18.2375 37.2437 16.0838 36.7965 14.1178 35.9861C16.0214 29.1273 21.1816 24.2145 27.0881 22.0193C28.1074 26.9591 27.3675 32.2528 24.9142 36.6619ZM26.1888 18.895C19.4475 21.323 13.5601 26.7922 11.1945 34.4253C6.70052 31.4196 3.73945 26.299 3.73945 20.4913C3.73945 18.4318 4.11144 16.4587 4.79196 14.6358C6.82041 15.6465 8.9894 16.3614 11.2199 16.759C14.0613 17.2799 16.9725 17.2626 19.8056 16.7518C21.4182 16.4606 22.9926 15.9969 24.5021 15.379C25.1741 16.4959 25.7392 17.673 26.1888 18.895ZM30.2154 21.1263C31.1895 25.6228 30.8941 30.3878 29.3395 34.7289C33.9519 31.8565 37.0659 26.805 37.2424 21.0181C34.9495 20.6024 32.5594 20.6531 30.2154 21.1263ZM37.0169 17.6969C34.4777 17.3402 31.8664 17.4561 29.3157 18.001C28.8133 16.5916 28.1792 15.2339 27.4237 13.9447C29.5194 12.7344 31.4332 11.211 33.0784 9.43474C35.0904 11.7225 36.489 14.5626 37.0169 17.6969ZM11.7932 13.566C9.85547 13.221 7.97337 12.5991 6.21698 11.7213C7.72756 9.26843 9.85275 7.23389 12.3782 5.83276L12.3976 5.83888L12.3983 5.83911L12.3984 5.83914L12.3985 5.83915C12.6736 5.92573 12.9362 6.00839 13.1892 6.09917C13.2825 6.13481 13.3739 6.16945 13.4632 6.20331L13.4646 6.20384L13.4647 6.20387L13.4647 6.20389C13.8748 6.35939 14.2411 6.49825 14.547 6.64009L14.6343 6.68373L14.6551 6.69341C14.8483 6.78326 15.1267 6.91594 15.3775 7.03557C15.5109 7.09919 15.6365 7.15907 15.7374 7.20682L15.7412 7.20888C15.8255 7.25419 15.8964 7.29226 15.9625 7.33163C16.0162 7.36651 16.0642 7.39476 16.09 7.40982C16.137 7.43738 16.1854 7.46463 16.2253 7.48682C16.2594 7.50576 16.2928 7.52419 16.3179 7.53794L16.3305 7.54488L16.3572 7.55963L16.3605 7.56157C16.3977 7.58301 16.4429 7.60876 16.4943 7.63813C16.6046 7.70107 16.744 7.78063 16.8972 7.87025C17.0051 7.93351 17.1061 7.99382 17.1885 8.04488C17.2497 8.08292 17.283 8.10499 17.2957 8.11338L17.2964 8.11388C17.3016 8.11734 17.3028 8.11815 17.3007 8.11655L17.3719 8.17044L17.4509 8.21738C17.5714 8.28889 17.6901 8.37105 17.8383 8.47357L17.8383 8.4736L17.8384 8.47363L17.839 8.47407C17.9066 8.52088 17.9804 8.57194 18.0633 8.62819L18.1196 8.66638L18.1675 8.69338C18.1674 8.69346 18.1697 8.69497 18.1744 8.69819C18.1873 8.70686 18.2186 8.72793 18.273 8.76694C18.3569 8.82694 18.458 8.90226 18.5694 8.98601L18.7013 9.08538C18.7691 9.13657 18.8379 9.18844 18.8964 9.23219C18.9736 9.29 19.0681 9.36019 19.1534 9.41932C20.3984 10.3715 21.5364 11.4587 22.5495 12.6571C21.4716 13.0515 20.3606 13.3551 19.2294 13.5593C16.7636 14.0039 14.2449 14.0159 11.8017 13.5675L11.7974 13.5667L11.7932 13.566ZM20.4949 3.7389C24.3407 3.7389 27.8837 5.03601 30.7114 7.21586C29.2288 8.81982 27.4927 10.1858 25.5918 11.2548C24.2849 9.59369 22.7728 8.09811 21.087 6.81394L21.0463 6.78294L21.004 6.75476L20.9925 6.74676C20.9835 6.7404 20.9715 6.73182 20.9562 6.72064C20.925 6.69803 20.8865 6.66949 20.8402 6.63485C20.7878 6.5956 20.7352 6.55589 20.6786 6.51324L20.6785 6.51316L20.6669 6.50441C20.6211 6.4698 20.5726 6.43319 20.5195 6.39329C20.4046 6.30691 20.2786 6.21295 20.1629 6.13001C20.082 6.07204 19.9657 5.99006 19.847 5.91776L19.7717 5.86566L19.7712 5.86536L19.7712 5.86534C19.6168 5.75837 19.3851 5.5979 19.1743 5.46845C18.9774 5.3304 18.7112 5.17313 18.5369 5.07102C18.368 4.97216 18.1862 4.86841 18.0734 4.80399L18.0725 4.80349L17.987 4.7546C17.9658 4.74222 17.9474 4.73199 17.9402 4.72799L17.9392 4.72743L17.8954 4.7032L17.8806 4.69503C17.8554 4.68117 17.8302 4.66731 17.804 4.65272C17.774 4.63604 17.7498 4.62227 17.7321 4.61197L17.7199 4.60344L17.6769 4.57714C17.521 4.48193 17.3587 4.39498 17.2706 4.34778L17.2687 4.34677L17.238 4.33032L17.2003 4.31004L17.1616 4.29176C17.0842 4.25521 16.9697 4.2007 16.8398 4.13876C18.0163 3.87698 19.2394 3.7389 20.4949 3.7389Z"
+      />
+    </svg>
+  )
+}
+
 function FeedIcon(props: React.ComponentPropsWithoutRef<'svg'>) {
   return (
     <svg viewBox="0 0 16 16" aria-hidden="true" fill="currentColor" {...props}>
@@ -39,34 +73,90 @@ function XIcon(props: React.ComponentPropsWithoutRef<'svg'>) {
     </svg>
   )
 }
+function LinkedInIcon(props: React.ComponentPropsWithoutRef<'svg'>) {
+  return (
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 32 32"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <g clip-path="url(#clip0_110_2)">
+        <path
+          fill-rule="evenodd"
+          clip-rule="evenodd"
+          d="M3.55556 32H28.4444C30.4081 32 32 30.4081 32 28.4444V3.55556C32 1.59188 30.4081 0 28.4444 0H3.55556C1.59188 0 0 1.59188 0 3.55556V28.4444C0 30.4081 1.59188 32 3.55556 32Z"
+          fill="currentColor"
+        />
+        <path
+          fill-rule="evenodd"
+          clip-rule="evenodd"
+          d="M27.5554 27.5554H22.8068V19.4675C22.8068 17.25 21.9642 16.0108 20.2091 16.0108C18.2997 16.0108 17.3021 17.3004 17.3021 19.4675V27.5554H12.7258V12.148H17.3021V14.2234C17.3021 14.2234 18.6781 11.6773 21.9477 11.6773C25.2157 11.6773 27.5554 13.673 27.5554 17.8004V27.5554ZM7.26627 10.1306C5.70747 10.1306 4.44434 8.85752 4.44434 7.28745C4.44434 5.71738 5.70747 4.44434 7.26627 4.44434C8.82506 4.44434 10.0874 5.71738 10.0874 7.28745C10.0874 8.85752 8.82506 10.1306 7.26627 10.1306ZM4.90325 27.5554H9.67518V12.148H4.90325V27.5554Z"
+          fill="white"
+        />
+      </g>
+      <defs>
+        <clipPath id="clip0_110_2">
+          <rect width="32" height="32" fill="white" />
+        </clipPath>
+      </defs>
+    </svg>
+  )
+}
 
 export function Intro() {
   return (
     <>
       <div>
-        <Link href="/">
+        {/* <Link href="/">
           <Logo className="inline-block h-8 w-auto" />
-        </Link>
+        </Link> */}
       </div>
-      <h1 className="mt-14 font-display text-4xl/tight font-light text-white">
-        Open-source Git client{' '}
-        <span className="text-sky-300">for macOS minimalists</span>
+      <h1 className="font-display text-4xl/tight font-light text-white">
+        Halo I'm Daffa <br />
+        <span className="text-sky-300">UI Designer and Frontend Developer</span>
       </h1>
-      <p className="mt-4 text-sm/6 text-gray-300">
-        Commit is a lightweight Git client you can open from anywhere any time
-        you’re ready to commit your work with a single keyboard shortcut. It’s
-        fast, beautiful, and completely unnecessary.
+      <p className="mt-4 font-sans text-sm/6 text-gray-300">
+        I help create engaging and seamless digital product experiences that
+        truly connect with users.
       </p>
       <SignUpForm />
       <div className="mt-8 flex flex-wrap justify-center gap-x-1 gap-y-3 sm:gap-x-2 lg:justify-start">
-        <IconLink href="#" icon={BookIcon} className="flex-none">
-          Documentation
+        {/* <IconLink
+          href="mailto:daffaerpan@gmail.com"
+          icon={LinkedInIcon}
+          className="flex-none"
+        >
+          Email
+        </IconLink> */}
+        <IconLink
+          href="https://www.linkedin.com/in/daffa-putra-p-7976b2283/  "
+          icon={LinkedInIcon}
+          className="flex-none"
+        >
+          LinkedIn
         </IconLink>
-        <IconLink href="#" icon={GitHubIcon} className="flex-none">
+        <IconLink
+          href="https://dribbble.com/daffaputra2323"
+          icon={DribbbleIcon}
+          className="flex-none"
+        >
+          Dribbble
+        </IconLink>
+        <IconLink
+          href="https://github.com/daffaputraa"
+          icon={GitHubIcon}
+          className="flex-none"
+        >
           GitHub
         </IconLink>
-        <IconLink href="/feed.xml" icon={FeedIcon} className="flex-none">
-          RSS
+        <IconLink
+          href="https://medium.com/@daffaputrapratamaa/membuat-alur-berlangganan-di-rcti-menjadi-lebih-ringkas-dan-cepat-fc3a6c3568d3"
+          icon={BookIcon}
+          className="flex-none"
+        >
+          Portofolio di Medium
         </IconLink>
       </div>
     </>
@@ -76,10 +166,7 @@ export function Intro() {
 export function IntroFooter() {
   return (
     <p className="flex items-baseline gap-x-2 text-[0.8125rem]/6 text-gray-500">
-      Brought to you by{' '}
-      <IconLink href="#" icon={XIcon} compact>
-        Joe Davola
-      </IconLink>
+      Build with Next JS and Designed Passionately with Figma
     </p>
   )
 }

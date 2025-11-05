@@ -101,7 +101,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <ThemeToggle />
       <div className="relative flex-auto">
         <Timeline />
-        <main className="space-y-20 py-20 sm:space-y-32 sm:py-32">
+        <main className="space-y-20 py-20 sm:space-y-32 sm:py-20">
           {children}
         </main>
       </div>
