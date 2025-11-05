@@ -114,7 +114,7 @@ export function Intro() {
         </Link> */}
       </div>
       <h1 className="font-display text-4xl/tight font-light text-white">
-        Halo I'm Daffa <br />
+        Halo I&apos;m Daffa <br />
         <span className="text-sky-300">UI Designer and Frontend Developer</span>
       </h1>
       <p className="mt-4 font-sans text-sm/6 text-gray-300">
