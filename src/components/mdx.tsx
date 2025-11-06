@@ -115,21 +115,22 @@ export const article = function Article({
   }, [])
 
   return (
-    // Padding vertikal (py-5) pada elemen 'a' juga bisa disesuaikan (misal: py-3) jika spasi antar artikel di daftar terasa terlalu jauh
-    <Link href={`/article/${id}`} legacyBehavior>
-      <a className="group block scroll-mt-16 rounded-2xl border border-transparent py-5 transition-all duration-200 hover:border-gray-200 hover:bg-gray-100 dark:hover:border-gray-700 dark:hover:bg-gray-900">
-        <article style={{ paddingBottom: `${heightAdjustment}px` }}>
-          <div ref={heightRef}>
-            <ArticleHeader id={id} date={date} />
-            <ContentWrapper className="typography" data-mdx-content>
-              {children}
-            </ContentWrapper>
-          </div>
-        </article>
-      </a>
-    </Link>
+    <article
+      className="group block scroll-mt-16 rounded-2xl border border-transparent py-5 transition-all duration-200 hover:border-gray-200 hover:bg-gray-100 dark:hover:border-gray-700 dark:hover:bg-gray-900"
+      style={{ paddingBottom: `${heightAdjustment}px` }}
+    >
+      <Link href={`/article/${id}`} className="block">
+        <div ref={heightRef}>
+          <ArticleHeader id={id} date={date} />
+          <ContentWrapper className="typography" data-mdx-content>
+            {children}
+          </ContentWrapper>
+        </div>
+      </Link>
+    </article>
   )
 }
+
 
 export const code = function Code({
   highlightedCode,
