@@ -55,7 +55,7 @@ function ContentWrapper({
             'mx-auto max-w-md lg:mx-0 lg:w-0 lg:max-w-lg lg:flex-auto',
             className,
           )}
-          {...props}
+          {...props} 
         />
       </div>
     </div>
