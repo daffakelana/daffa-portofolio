@@ -4,6 +4,7 @@ import { Intro, IntroFooter } from '@/components/Intro'
 import { StarField } from '@/components/StarField'
 import { ThemeToggle } from '@/components/ThemeToggle'
 
+// berfungsi untuk menunjukkan timeline
 function Timeline() {
   let id = useId()
 
@@ -67,6 +68,7 @@ function Glow() {
   )
 }
 
+// berguna untuk menunjukkan informasi di sebalah kiri website
 function FixedSidebar({
   main,
   footer,
@@ -100,6 +102,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <FixedSidebar main={<Intro />} footer={<IntroFooter />} />
       <ThemeToggle />
       <div className="relative flex-auto">
+        {/* Berguna untuk menunjukkan timeline di list portofolio */}
         <Timeline />
         <main className="space-y-20 py-20 sm:space-y-32 sm:py-20">
           {children}

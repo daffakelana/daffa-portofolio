@@ -88,6 +88,8 @@ function ArticleHeader({ id, date }: { id: string; date: string | Date }) {
   )
 }
 
+
+// Card article/card porto
 export const article = function Article({
   id,
   date,
