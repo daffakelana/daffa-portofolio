@@ -1,8 +1,7 @@
 'use client'
 
-import { supabase } from '@/lib/SupabaseClient';
-import { useEffect, useRef, useState } from 'react'
-
+import { supabase } from '@/lib/SupabaseClient'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
 // ============================================================
 // TYPES
@@ -71,9 +70,7 @@ async function uploadImage(file: File, slug: string): Promise<string | null> {
     return null
   }
 
-  const { data: urlData } = supabase.storage
-    .from('projects')
-    .getPublicUrl(path)
+  const { data: urlData } = supabase.storage.from('projects').getPublicUrl(path)
 
   console.log('Public URL:', urlData.publicUrl)
 
@@ -211,6 +208,7 @@ function BlockEditor({
         <div className="space-y-2">
           {block.url ? (
             <div className="relative overflow-hidden rounded-lg">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={block.url}
                 alt=""
@@ -257,6 +255,7 @@ function BlockEditor({
             <div className="grid grid-cols-3 gap-2">
               {block.urls.map((url, i) => (
                 <div key={i} className="relative overflow-hidden rounded-lg">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src={url} alt="" className="h-24 w-full object-cover" />
                   <button
                     onClick={() =>
@@ -549,7 +548,6 @@ function ProjectForm({
     setDeleting(false)
   }
 
-  
   return (
     <div className="space-y-6">
       {/* Basic info */}
@@ -601,6 +599,7 @@ function ProjectForm({
           <p className="mb-2 text-xs text-gray-500">Thumbnail</p>
           {form.thumbnail ? (
             <div className="relative overflow-hidden rounded-lg">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={form.thumbnail}
                 alt=""
@@ -650,7 +649,7 @@ function ProjectForm({
 
         {form.sections.length === 0 && (
           <div className="rounded-xl border border-dashed border-gray-800 py-10 text-center text-sm text-gray-600">
-            Belum ada section. Klik "+ Tambah section" untuk mulai.
+            {`Belum ada section. Klik "+ Tambah section" untuk mulai.`}
           </div>
         )}
 
@@ -722,17 +721,17 @@ export default function AdminPage() {
   const removeToast = (id: string) =>
     setToasts((t) => t.filter((x) => x.id !== id))
 
-  const fetchProjects = async () => {
+  const fetchProjects = useCallback(async () => {
     setLoading(true)
     const { data, error } = await supabase.rpc('get_projects')
     if (error) showToast('error', 'Gagal memuat projects')
     else setProjects(data ?? [])
     setLoading(false)
-  }
+  }, [])
 
   useEffect(() => {
     fetchProjects()
-  }, [])
+  }, [fetchProjects])
 
   const handleSave = async (payload: Omit<Project, 'id'>, id?: string) => {
     if (id) {
@@ -786,6 +785,7 @@ export default function AdminPage() {
     setSelected(data[0])
     setView('edit')
   }
+
   return (
     <div className="min-h-screen bg-gray-950 text-gray-100">
       <ToastContainer toasts={toasts} onRemove={removeToast} />
@@ -840,10 +840,11 @@ export default function AdminPage() {
               projects.map((project) => (
                 <button
                   key={project.id}
-                  onClick={() => handleEdit(project)} // ← ganti ini
+                  onClick={() => handleEdit(project)}
                   className="flex w-full items-center gap-4 rounded-xl border border-gray-800 bg-gray-900/50 p-4 text-left transition hover:border-gray-700 hover:bg-gray-900"
                 >
                   {project.thumbnail && (
+                    /* eslint-disable-next-line @next/next/no-img-element */
                     <img
                       src={project.thumbnail}
                       alt=""
