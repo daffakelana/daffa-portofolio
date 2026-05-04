@@ -159,37 +159,18 @@ function SectionRenderer({ section }: { section: Section }) {
 function SidebarNav({
   sections,
   activeId,
+  onNavigate,
 }: {
   sections: Section[]
   activeId: string
+  onNavigate: (id: string) => void
 }) {
-  const scrollTo = (id: string) => {
-    const el = document.getElementById(id)
-    if (!el) return
-    el.scrollIntoView({ behavior: 'smooth', block: 'start' })
-  }
-
-  const scrollToSection = (id: string) => {
-    const el = document.getElementById(id)
-    if (!el) return
-
-    isScrollingTo.current = true
-    setActiveId(id) // langsung set aktif saat klik
-
-    el.scrollIntoView({ behavior: 'smooth', block: 'start' })
-
-    // Resume listener setelah scroll selesai (~800ms)
-    setTimeout(() => {
-      isScrollingTo.current = false
-    }, 800)
-  }
-
   return (
     <nav className="space-y-0.5">
       {sections.map((section) => (
         <button
           key={section.id}
-          onClick={() => scrollTo(section.id)}
+          onClick={() => onNavigate(section.id)}
           className={`group flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left text-sm transition-all duration-200 ${
             activeId === section.id
               ? 'bg-gray-100 font-medium text-gray-900 dark:bg-gray-800 dark:text-white'
@@ -217,17 +198,17 @@ function SidebarNav({
 function MobileNav({
   sections,
   activeId,
+  onNavigate,
 }: {
   sections: Section[]
   activeId: string
+  onNavigate: (id: string) => void
 }) {
   const [open, setOpen] = useState(false)
   const activeSection = sections.find((s) => s.id === activeId)
 
-  const scrollTo = (id: string) => {
-    const el = document.getElementById(id)
-    if (!el) return
-    el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  const handleClick = (id: string) => {
+    onNavigate(id)
     setOpen(false)
   }
 
@@ -284,7 +265,7 @@ function MobileNav({
             {sections.map((section) => (
               <button
                 key={section.id}
-                onClick={() => scrollTo(section.id)}
+                onClick={() => handleClick(section.id)}
                 className={`flex w-full items-center gap-3 px-6 py-2.5 text-left text-sm transition-colors ${
                   activeId === section.id
                     ? 'bg-gray-50 font-medium text-gray-900 dark:bg-gray-800/50 dark:text-white'
@@ -334,39 +315,90 @@ export default function ProjectDetailPage({ project }: { project: Project }) {
   )
   const [loaded, setLoaded] = useState(false)
 
+  // Lock active state sebentar setelah klik supaya tidak "loncat"
+  // ke section lain karena IntersectionObserver kebaca duluan saat smooth scroll.
+  const lockUntilRef = useRef<number>(0)
+
   useEffect(() => {
     const t = setTimeout(() => setLoaded(true), 50)
     return () => clearTimeout(t)
   }, [])
 
-  const isScrollingTo = useRef(false)
-
+  // ----------------------------------------------------------
+  // SCROLL-SPY: update activeId saat user scroll
+  // ----------------------------------------------------------
   useEffect(() => {
-    const handleScroll = () => {
-      if (isScrollingTo.current) return // pause saat sedang scroll ke section
+    if (project.sections.length === 0) return
 
-      const scrollY = window.scrollY + window.innerHeight * 0.3
-      let current = project.sections[0]?.id ?? ''
+    const elements = project.sections
+      .map((s) => document.getElementById(s.id))
+      .filter((el): el is HTMLElement => el !== null)
 
-      for (const section of project.sections) {
-        const el = document.getElementById(section.id)
-        if (!el) continue
-        if (el.offsetTop <= scrollY) {
-          current = section.id
+    if (elements.length === 0) return
+
+    const updateActive = () => {
+      // Skip kalau masih dalam masa "lock" setelah klik manual
+      if (Date.now() < lockUntilRef.current) return
+
+      // Cari section yang paling dekat dengan trigger line (~25% dari atas viewport)
+      const triggerY = window.innerHeight * 0.25
+      let bestId = elements[0].id
+      let bestDistance = Infinity
+
+      for (const el of elements) {
+        const rect = el.getBoundingClientRect()
+        // Section dianggap kandidat kalau topnya sudah lewat trigger line
+        // (atau masih di atas viewport)
+        if (rect.top <= triggerY) {
+          const distance = triggerY - rect.top
+          if (distance < bestDistance) {
+            bestDistance = distance
+            bestId = el.id
+          }
         }
       }
 
-      setActiveId(current)
+      // Edge case: kalau scroll sampai mentok bawah, paksa section terakhir aktif
+      const scrolledToBottom =
+        window.innerHeight + window.scrollY >=
+        document.documentElement.scrollHeight - 4
+      if (scrolledToBottom) {
+        bestId = elements[elements.length - 1].id
+      }
+
+      setActiveId((prev) => (prev === bestId ? prev : bestId))
     }
 
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    handleScroll()
-    return () => window.removeEventListener('scroll', handleScroll)
+    updateActive()
+
+    window.addEventListener('scroll', updateActive, { passive: true })
+    window.addEventListener('resize', updateActive)
+    return () => {
+      window.removeEventListener('scroll', updateActive)
+      window.removeEventListener('resize', updateActive)
+    }
   }, [project.sections])
+
+  // ----------------------------------------------------------
+  // Handler scroll ketika user klik section di nav
+  // ----------------------------------------------------------
+  const handleNavigate = (id: string) => {
+    const el = document.getElementById(id)
+    if (!el) return
+    setActiveId(id)
+    // Lock 800ms supaya scroll-spy tidak override pilihan user
+    // selama animasi smooth scroll berlangsung.
+    lockUntilRef.current = Date.now() + 800
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }
 
   return (
     <div className="min-h-screen bg-white dark:bg-gray-950">
-      <MobileNav sections={project.sections} activeId={activeId} />
+      <MobileNav
+        sections={project.sections}
+        activeId={activeId}
+        onNavigate={handleNavigate}
+      />
 
       <div
         className={`fixed left-6 top-6 z-50 transition-all duration-500 ${
@@ -451,7 +483,11 @@ export default function ProjectDetailPage({ project }: { project: Project }) {
               <p className="mb-3 px-3 text-xs font-semibold uppercase tracking-widest text-gray-400 dark:text-gray-600">
                 Contents
               </p>
-              <SidebarNav sections={project.sections} activeId={activeId} />
+              <SidebarNav
+                sections={project.sections}
+                activeId={activeId}
+                onNavigate={handleNavigate}
+              />
             </div>
           </aside>
 
