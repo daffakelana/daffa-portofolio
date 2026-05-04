@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 
 // ============================================================
@@ -156,34 +156,32 @@ function SectionRenderer({ section }: { section: Section }) {
 // SIDEBAR NAV — desktop
 // ============================================================
 
-function SidebarNav({ sections }: { sections: Section[] }) {
-  const [activeId, setActiveId] = useState<string>(sections[0]?.id ?? '')
-
-  useEffect(() => {
-    const observers: IntersectionObserver[] = []
-
-    sections.forEach(({ id }) => {
-      const el = document.getElementById(id)
-      if (!el) return
-
-      const observer = new IntersectionObserver(
-        ([entry]) => {
-          if (entry.isIntersecting) setActiveId(id)
-        },
-        { rootMargin: '-20% 0px -60% 0px' },
-      )
-
-      observer.observe(el)
-      observers.push(observer)
-    })
-
-    return () => observers.forEach((o) => o.disconnect())
-  }, [sections])
-
+function SidebarNav({
+  sections,
+  activeId,
+}: {
+  sections: Section[]
+  activeId: string
+}) {
   const scrollTo = (id: string) => {
     const el = document.getElementById(id)
     if (!el) return
     el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }
+
+  const scrollToSection = (id: string) => {
+    const el = document.getElementById(id)
+    if (!el) return
+
+    isScrollingTo.current = true
+    setActiveId(id) // langsung set aktif saat klik
+
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+
+    // Resume listener setelah scroll selesai (~800ms)
+    setTimeout(() => {
+      isScrollingTo.current = false
+    }, 800)
   }
 
   return (
@@ -341,25 +339,29 @@ export default function ProjectDetailPage({ project }: { project: Project }) {
     return () => clearTimeout(t)
   }, [])
 
+  const isScrollingTo = useRef(false)
+
   useEffect(() => {
-    const observers: IntersectionObserver[] = []
+    const handleScroll = () => {
+      if (isScrollingTo.current) return // pause saat sedang scroll ke section
 
-    project.sections.forEach(({ id }) => {
-      const el = document.getElementById(id)
-      if (!el) return
+      const scrollY = window.scrollY + window.innerHeight * 0.3
+      let current = project.sections[0]?.id ?? ''
 
-      const observer = new IntersectionObserver(
-        ([entry]) => {
-          if (entry.isIntersecting) setActiveId(id)
-        },
-        { rootMargin: '-20% 0px -60% 0px' },
-      )
+      for (const section of project.sections) {
+        const el = document.getElementById(section.id)
+        if (!el) continue
+        if (el.offsetTop <= scrollY) {
+          current = section.id
+        }
+      }
 
-      observer.observe(el)
-      observers.push(observer)
-    })
+      setActiveId(current)
+    }
 
-    return () => observers.forEach((o) => o.disconnect())
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    handleScroll()
+    return () => window.removeEventListener('scroll', handleScroll)
   }, [project.sections])
 
   return (
@@ -449,7 +451,7 @@ export default function ProjectDetailPage({ project }: { project: Project }) {
               <p className="mb-3 px-3 text-xs font-semibold uppercase tracking-widest text-gray-400 dark:text-gray-600">
                 Contents
               </p>
-              <SidebarNav sections={project.sections} />
+              <SidebarNav sections={project.sections} activeId={activeId} />
             </div>
           </aside>
 

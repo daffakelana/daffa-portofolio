@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import clsx from 'clsx'
+import { useRouter } from 'next/navigation'
 
 // ============================================================
 // TYPES
@@ -134,12 +135,14 @@ function ProjectThumbnail({
 // ============================================================
 
 export function ProjectCard({ project }: { project: Project }) {
+  
+  const router = useRouter()
   const heightRef = useRef<HTMLDivElement>(null)
   const [heightAdjustment, setHeightAdjustment] = useState(12)
+  const ref = useRef<HTMLElement>(null)
 
   useEffect(() => {
     if (!heightRef.current) return
-
     const observer = new window.ResizeObserver(() => {
       if (!heightRef.current) return
       const { height } = heightRef.current.getBoundingClientRect()
@@ -151,12 +154,30 @@ export function ProjectCard({ project }: { project: Project }) {
     return () => observer.disconnect()
   }, [])
 
+    useEffect(() => {
+      const el = ref.current
+      if (!el) return
+
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) {
+            router.prefetch(`/portfolio/${project.slug}`)
+            observer.disconnect() // prefetch sekali saja
+          }
+        },
+        { rootMargin: '200px' }, // mulai prefetch 200px sebelum card terlihat
+      )
+
+      observer.observe(el)
+      return () => observer.disconnect()
+    }, [project.slug, router])
+
   return (
     <article
       className="group block scroll-mt-2 rounded-xl border border-transparent py-12 transition-all duration-200 hover:border-gray-200 hover:bg-gray-100 dark:hover:border-gray-700 dark:hover:bg-gray-900"
       // style={{ paddingBottom: `${heightAdjustment}px` }}
     >
-      <Link href={`/portofolio/${project.slug}`} className="block">
+      <Link href={`/portofolio/${project.slug}`} prefetch={true} className="block">
         <div ref={heightRef}>
           <ArticleHeader id={project.id} date={project.date} />
 

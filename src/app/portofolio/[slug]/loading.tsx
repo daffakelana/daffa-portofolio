@@ -1,4 +1,4 @@
-// app/portfolio/[slug]/loading.tsx
+
 export default function Loading() {
   return (
     <div className="min-h-screen bg-white dark:bg-gray-950">
