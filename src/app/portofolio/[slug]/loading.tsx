@@ -3,7 +3,7 @@ export default function Loading() {
   return (
     <div className="min-h-screen bg-white dark:bg-gray-950">
       {/* Skeleton hero */}
-      <div className="h-[45vh] min-h-[280px] w-full animate-pulse bg-gray-100 sm:h-[55vh] dark:bg-gray-900" />
+      <div className="h-[45vh] min-h-[280px] w-full animate-pulse bg-gray-100 sm:h-[55vh] dark:bg-gray-900 t" />
 
       <div className="mx-auto max-w-6xl px-6 py-8 sm:px-8">
         {/* Skeleton tags */}
