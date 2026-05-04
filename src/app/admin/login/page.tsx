@@ -2,36 +2,12 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { useAuthGuard } from '@/lib/AuthGuard'
+import { isLoggedIn,  setLoggedIn } from '../../../lib/Auth'
 
-// ============================================================
-// KREDENSIAL — ganti sesuai kebutuhan
-// ============================================================
 const ADMIN_USERNAME = 'admin'
 const ADMIN_PASSWORD = 'admin123'
-const STORAGE_KEY = 'portfolio_admin_auth'
-
-// ============================================================
-// AUTH HELPERS
-// ============================================================
-
-export function isLoggedIn(): boolean {
-  if (typeof window === 'undefined') return false
-  return localStorage.getItem(STORAGE_KEY) === 'true'
-}
-
-export function logout() {
-  localStorage.removeItem(STORAGE_KEY)
-}
-
-// ============================================================
-// LOGIN PAGE
-// ============================================================
 
 export default function LoginPage() {
-
-  useAuthGuard()  
-
   const router = useRouter()
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -41,7 +17,6 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false)
 
   useEffect(() => {
-    // Kalau sudah login, redirect ke admin
     if (isLoggedIn()) {
       router.replace('/admin')
       return
@@ -52,18 +27,14 @@ export default function LoginPage() {
 
   const handleSubmit = () => {
     setError('')
-
     if (!username || !password) {
       setError('Username dan password wajib diisi.')
       return
     }
-
     setLoading(true)
-
-    // Simulasi delay supaya tidak instant
     setTimeout(() => {
       if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
-        localStorage.setItem(STORAGE_KEY, 'true')
+        setLoggedIn()
         router.push('/admin')
       } else {
         setError('Username atau password salah.')
@@ -78,26 +49,18 @@ export default function LoginPage() {
 
   return (
     <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-gray-950 px-6">
-      {/* Background subtle grid */}
       <div
         className="pointer-events-none absolute inset-0 opacity-[0.03]"
         style={{
-          backgroundImage: `linear-gradient(rgba(255,255,255,0.8) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(255,255,255,0.8) 1px, transparent 1px)`,
+          backgroundImage: `linear-gradient(rgba(255,255,255,0.8) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.8) 1px, transparent 1px)`,
           backgroundSize: '48px 48px',
         }}
       />
-
-      {/* Glow */}
       <div className="pointer-events-none absolute left-1/2 top-1/2 h-[400px] w-[400px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-sky-500/5 blur-3xl" />
 
-      {/* Card */}
       <div
-        className={`relative w-full max-w-sm transition-all duration-700 ${
-          loaded ? 'translate-y-0 opacity-100' : 'translate-y-6 opacity-0'
-        }`}
+        className={`relative w-full max-w-sm transition-all duration-700 ${loaded ? 'translate-y-0 opacity-100' : 'translate-y-6 opacity-0'}`}
       >
-        {/* Logo / title */}
         <div
           className={`mb-8 transition-all delay-100 duration-700 ${loaded ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}`}
         >
@@ -118,11 +81,9 @@ export default function LoginPage() {
           </p>
         </div>
 
-        {/* Form */}
         <div
           className={`space-y-3 transition-all delay-150 duration-700 ${loaded ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}`}
         >
-          {/* Username */}
           <div>
             <label className="mb-1.5 block text-xs font-medium text-gray-400">
               Username
@@ -137,15 +98,10 @@ export default function LoginPage() {
               onKeyDown={handleKeyDown}
               placeholder="admin"
               autoComplete="username"
-              className={`w-full rounded-xl border bg-gray-900 px-4 py-3 text-sm text-white placeholder-gray-600 outline-none transition-all ${
-                error
-                  ? 'border-red-800 focus:border-red-600'
-                  : 'border-gray-800 focus:border-gray-600'
-              }`}
+              className={`w-full rounded-xl border bg-gray-900 px-4 py-3 text-sm text-white placeholder-gray-600 outline-none transition-all ${error ? 'border-red-800 focus:border-red-600' : 'border-gray-800 focus:border-gray-600'}`}
             />
           </div>
 
-          {/* Password */}
           <div>
             <label className="mb-1.5 block text-xs font-medium text-gray-400">
               Password
@@ -161,11 +117,7 @@ export default function LoginPage() {
                 onKeyDown={handleKeyDown}
                 placeholder="••••••••"
                 autoComplete="current-password"
-                className={`w-full rounded-xl border bg-gray-900 px-4 py-3 pr-11 text-sm text-white placeholder-gray-600 outline-none transition-all ${
-                  error
-                    ? 'border-red-800 focus:border-red-600'
-                    : 'border-gray-800 focus:border-gray-600'
-                }`}
+                className={`w-full rounded-xl border bg-gray-900 px-4 py-3 pr-11 text-sm text-white placeholder-gray-600 outline-none transition-all ${error ? 'border-red-800 focus:border-red-600' : 'border-gray-800 focus:border-gray-600'}`}
               />
               <button
                 type="button"
@@ -214,7 +166,6 @@ export default function LoginPage() {
             </div>
           </div>
 
-          {/* Error */}
           {error && (
             <p className="flex items-center gap-1.5 text-xs text-red-400">
               <svg
@@ -233,7 +184,6 @@ export default function LoginPage() {
             </p>
           )}
 
-          {/* Submit */}
           <button
             onClick={handleSubmit}
             disabled={loading}
