@@ -1,5 +1,6 @@
 'use client'
 
+import { useAuthGuard } from '@/lib/AuthGuard'
 import { supabase } from '@/lib/SupabaseClient'
 import { useCallback, useEffect, useRef, useState } from 'react'
 
@@ -706,6 +707,9 @@ function ProjectForm({
 // ============================================================
 
 export default function AdminPage() {
+
+  useAuthGuard()
+
   const [projects, setProjects] = useState<Project[]>([])
   const [loading, setLoading] = useState(true)
   const [view, setView] = useState<'list' | 'create' | 'edit'>('list')
