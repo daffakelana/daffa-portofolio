@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
+import { RichText } from '@/components/RichText'
 
 // ============================================================
 // TYPES
@@ -37,10 +38,24 @@ type Project = {
 
 function BlockRenderer({ block }: { block: Block }) {
   if (block.type === 'text') {
-    return (
-      <p className="text-[0.9375rem] leading-relaxed text-gray-600 dark:text-gray-400">
-        {block.value}
-      </p>
+    // Data baru dari rich editor = HTML. Data lama = plain text.
+    // Deteksi: kalau mengandung tag HTML, render sebagai rich text;
+    // kalau tidak, fallback ke plain text yang tetap menghormati baris baru.
+    const isHtml = /<[a-z][\s\S]*>/i.test(block.value)
+
+    return isHtml ? (
+      <RichText html={block.value} />
+    ) : (
+      <div className="space-y-4">
+        {block.value.split(/\n{2,}/).map((para, i) => (
+          <p
+            key={i}
+            className="whitespace-pre-line text-[0.9375rem] leading-relaxed text-gray-600 dark:text-gray-400"
+          >
+            {para}
+          </p>
+        ))}
+      </div>
     )
   }
 

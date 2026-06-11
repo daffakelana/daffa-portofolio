@@ -3,6 +3,7 @@
 import { useAuthGuard } from '@/lib/AuthGuard'
 import { supabase } from '@/lib/SupabaseClient'
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { RichTextEditor } from '@/components/RichTextEditor'
 
 // ============================================================
 // TYPES
@@ -195,12 +196,9 @@ function BlockEditor({
 
       {/* Text block */}
       {block.type === 'text' && (
-        <textarea
+        <RichTextEditor
           value={block.value}
-          onChange={(e) => onChange({ ...block, value: e.target.value })}
-          placeholder="Tulis teks di sini..."
-          rows={4}
-          className="w-full resize-y rounded-lg bg-gray-900 px-3 py-2 text-sm text-gray-200 placeholder-gray-600 outline-none ring-1 ring-gray-800 focus:ring-gray-600"
+          onChange={(html) => onChange({ ...block, value: html })}
         />
       )}
 
