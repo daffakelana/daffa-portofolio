@@ -1,16 +1,18 @@
 import { notFound } from 'next/navigation'
-import { createClient } from '@supabase/supabase-js'
 import ProjectDetailPage from '@/components/ProjectDetail'
 import { ThemeToggle } from '@/components/ThemeToggle'
 import { supabase } from '@/lib/SupabaseClient'
 
-
+// Selalu render di request time + matikan semua cache fetch ke Supabase.
+// Ini kombinasi yang bikin data SELALU fresh, cocok kalau project diedit
+// langsung di DB (bukan lewat Server Action di app ini).
 export const dynamic = 'force-dynamic'
+export const revalidate = 0
+export const fetchCache = 'force-no-store'
 
-export async function generateStaticParams() {
-  const { data } = await supabase.from('projects').select('slug')
-  return (data ?? []).map((p:any) => ({ slug: p.slug }))
-}
+// CATATAN: generateStaticParams sengaja DIHAPUS.
+// generateStaticParams = "pre-render statis saat build", yang bertentangan
+// dengan force-dynamic. Pilih satu strategi; di sini kita pilih full dynamic.
 
 export async function generateMetadata({
   params,

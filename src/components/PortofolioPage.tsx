@@ -177,7 +177,7 @@ export function ProjectCard({ project }: { project: Project }) {
       className="group block scroll-mt-2 rounded-xl border border-transparent py-12 transition-all duration-200 hover:border-gray-200 hover:bg-gray-100 dark:hover:border-gray-700 dark:hover:bg-gray-900"
       // style={{ paddingBottom: `${heightAdjustment}px` }}
     >
-      <Link href={`/portofolio/${project.slug}`} prefetch={true} className="block">
+      <Link href={`/portofolio/${project.slug}`} className="block">
         <div ref={heightRef}>
           <ArticleHeader id={project.id} date={project.date} />
 
