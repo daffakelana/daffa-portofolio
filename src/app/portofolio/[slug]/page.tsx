@@ -18,17 +18,11 @@ const getProject = cache(async (slug: string) => {
   return data?.[0] ?? null
 })
 
-export async function generateMetadata({
-  params,
-}: {
-  params: { slug: string }
-}) {
-  const project = await getProject(params.slug)
-  if (!project) return {}
-  return {
-    title: project.title,
-    description: project.description ?? '',
-  }
+export function generateMetadata({ params }: { params: { slug: string } }) {
+  const title = params.slug
+    .replace(/-/g, ' ')
+    .replace(/\b\w/g, (c) => c.toUpperCase())
+  return { title }
 }
 
 export default async function Page({ params }: { params: { slug: string } }) {
